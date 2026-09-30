@@ -1,0 +1,112 @@
+# Requires Go Task v3: https://taskfile.dev/docs/installation
+version: '3'
+
+# Every task runs from the project root, including when invoked with --taskfile.
+dir: '{{.TASKFILE_DIR}}'
+
+vars:
+  # Override with: task install CODE_CLI=code-insiders
+  # An absolute executable path containing spaces is supported.
+  CODE_CLI: code
+
+tasks:
+  default:
+    desc: List available tasks
+    cmds:
+      - task --list
+
+  tools:check:
+    desc: Check Node.js 22+ and npm
+    run: once
+    preconditions:
+      - sh: node --version
+        msg: Install Node.js 22 or later and make node available on PATH.
+      - sh: npm --version
+        msg: Install npm and make it available on PATH.
+      - sh: >-
+          node -e "process.exit(Number(process.versions.node.split('.')[0]) >= 22 ? 0 : 1)"
+        msg: Node.js 22 or later is required.
+    cmds:
+      - node --version
+      - npm --version
+
+  deps:install:
+    desc: Install the exact development dependencies from package-lock.json
+    run: once
+    cmds:
+      - task: tools:check
+      - npm ci --include=dev
+
+  check:
+    desc: Install dependencies, syntax-check JavaScript, and run unit/DOM tests
+    run: once
+    cmds:
+      - task: deps:install
+      - npm run check
+
+  test:
+    desc: Install dependencies and run unit/DOM tests only
+    cmds:
+      - task: deps:install
+      - npm test
+
+  browsers:install:
+    desc: Install Chromium for optional browser UI tests
+    cmds:
+      - task: deps:install
+      - npx --no-install playwright install chromium
+
+  test:ui:
+    desc: Install Chromium and run the browser UI tests
+    cmds:
+      - task: browsers:install
+      - npm run test:ui
+    # On minimal Linux systems, first install browser system libraries:
+    # npx --no-install playwright install-deps chromium
+
+  vsix:build:
+    desc: Build the VSIX from current sources (dependencies installed; checks skipped)
+    cmds:
+      - task: deps:install
+      - npm run package
+
+  package:
+    desc: Install dependencies, run checks, then create dist/<name>-<version>.vsix
+    cmds:
+      # Use cmds, not deps: these steps must run sequentially.
+      - task: check
+      - task: vsix:build
+
+  vscode:check:
+    desc: Check the local VS Code CLI (override CODE_CLI for Insiders)
+    env:
+      CHANGELOG_CODE_CLI: '{{.CODE_CLI}}'
+    preconditions:
+      - sh: '"$CHANGELOG_CODE_CLI" --version'
+        msg: 'VS Code CLI unavailable. Add code to PATH or pass CODE_CLI=/path/to/code.'
+    cmds:
+      - '"$CHANGELOG_CODE_CLI" --version'
+
+  vsix:install:
+    desc: Install an already-built VSIX into the selected local VS Code instance
+    vars:
+      VSIX:
+        sh: node -p "const p = require('./package.json'); 'dist/' + p.name + '-' + p.version + '.vsix'"
+    env:
+      CHANGELOG_CODE_CLI: '{{.CODE_CLI}}'
+      CHANGELOG_VSIX: '{{.VSIX}}'
+    preconditions:
+      - sh: >-
+          node -e "const fs = require('node:fs'); const p = require('./package.json'); const f = 'dist/' + p.name + '-' + p.version + '.vsix'; process.exit(fs.existsSync(f) && fs.statSync(f).size > 0 ? 0 : 1)"
+        msg: 'VSIX missing. Run task package first.'
+    cmds:
+      - task: vscode:check
+      # --force supports reinstalling the same version while developing.
+      - '"$CHANGELOG_CODE_CLI" --install-extension "$CHANGELOG_VSIX" --force'
+
+  install:
+    desc: Check VS Code, build and check the extension, then install it locally
+    cmds:
+      - task: vscode:check
+      - task: package
+      - task: vsix:install

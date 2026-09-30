@@ -1,0 +1,39 @@
+# Copyright 2026 Terradue
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+site_name: Changelog Studio
+site_description: A visual Keep a Changelog editor for VS Code
+site_author: Terradue
+site_url: https://terradue.github.io/changelog-studio/
+repo_url: https://github.com/terradue/changelog-studio
+repo_name: terradue/changelog-studio
+site_dir: site
+
+theme:
+  name: readthedocs
+nav:
+  - Home: index.md
+  - Tutorials:
+      - Your first release: tutorials/first-release.md
+  - How-to guides:
+      - Use Git and existing changelogs: how-to/git.md
+      - Develop and test: how-to/develop.md
+      - Package and release: how-to/release.md
+  - Reference:
+      - Commands and behavior: reference/commands.md
+      - Markdown and validation: reference/markdown.md
+      - CI contract: reference/ci.md
+  - Explanation:
+      - Synchronization and safety: explanation/synchronization.md
+      - Architecture: explanation/architecture.md

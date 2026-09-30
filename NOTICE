@@ -1,0 +1,8 @@
+# Third-party notices
+
+- Keep a Changelog mark, background and visual design: Olivier Lacan and contributors, https://github.com/olivierlacan/keep-a-changelog, MIT. Full notice: licenses/keep-a-changelog.txt.
+- Mulish font: bundled WOFF2, SIL Open Font License 1.1; licenses/mulish.txt.
+- Source Code Pro font: bundled WOFF2, SIL Open Font License 1.1; licenses/source-code-pro.txt.
+- SemVer official validation regular expression and precedence: https://semver.org/, CC BY 3.0, Tom Preston-Werner and contributors. Attribution and license: https://creativecommons.org/licenses/by/3.0/.
+
+The Changelog Studio application code is Apache-2.0 licensed. This project is not endorsed by Keep a Changelog. Dependency licenses remain in their npm packages; dev dependencies are excluded from the VSIX.

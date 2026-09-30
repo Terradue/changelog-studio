@@ -1,0 +1,14 @@
+.github/**
+.vscode/**
+docs/**
+tests/**
+scripts/**
+node_modules/**
+site/**
+dist/**
+playwright*
+test-results/**
+*.zip
+package-lock.json
+mkdocs.yaml
+requirements-docs.txt

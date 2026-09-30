@@ -1,0 +1,32 @@
+<header>
+  <div class="brand">
+    <span class="hero-mark" aria-hidden="true"></span> Changelog <b>Studio</b>
+  </div>
+  <a href="https://keepachangelog.com/" target="_blank" rel="noreferrer"
+    >Format guide ↗</a
+  >
+</header>
+<main>
+  <section class="panel visual">
+    <div class="panelhead">
+      <div>
+        <h2>Release editor</h2>
+        <span id="count" class="pill"></span>
+      </div>
+      <button id="add" class="accent">+ Add release</button>
+    </div>
+    <div id="validation-summary" role="status"></div>
+    <div id="releases"></div>
+  </section>
+  <p id="status" role="status" aria-live="polite"></p>
+</main>
+<dialog id="confirm">
+  <form method="dialog">
+    <h2>Remove this release?</h2>
+    <p>Its change items will also be removed. You can undo this.</p>
+    <div class="actions">
+      <button value="cancel">Cancel</button
+      ><button value="remove" class="danger">Remove release</button>
+    </div>
+  </form>
+</dialog>
