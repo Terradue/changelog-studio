@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Terradue" /><link rel="canonical" href="https://terradue.github.io/changelog-studio/how-to/git/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Use Git and existing changelogs - Changelog Studio</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Use Git and existing changelogs";
+        var mkdocs_page_input_path = "how-to/git.md";
+        var mkdocs_page_url = "/changelog-studio/how-to/git/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Changelog Studio
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Tutorials</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../tutorials/first-release/">Your first release</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">How-to guides</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Use Git and existing changelogs</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#repository-selection">Repository selection</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#missing-or-unsupported-links">Missing or unsupported links</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#recover-a-concurrent-edit">Recover a concurrent edit</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../develop/">Develop and test</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../release/">Package and release</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/commands/">Commands and behavior</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/markdown/">Markdown and validation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/ci/">CI contract</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Explanation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../explanation/synchronization/">Synchronization and safety</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../explanation/architecture/">Architecture</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Changelog Studio</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">How-to guides</li>
+      <li class="breadcrumb-item active">Use Git and existing changelogs</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/terradue/changelog-studio/edit/master/docs/how-to/git.md">Edit on terradue/changelog-studio</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="use-git-and-existing-changelogs">Use Git and existing changelogs</h1>
+<p>Open any existing Markdown changelog, then run <strong>Changelog Studio: Open Release Editor</strong>. The extension reads the current unsaved document as well as later changes.</p>
+<h2 id="repository-selection">Repository selection</h2>
+<p>The extension reads VS Code's built-in Git extension API. That API handles <code>.git</code> directories, worktree <code>.git</code> files, nested repositories, and multi-root workspaces. The deepest repository containing the document wins. Remote preference is the current branch's upstream remote, then <code>origin</code>, then the first configured remote. Fetch URL is preferred to push URL. SSH GitHub/GitLab remotes are normalized to HTTPS comparison URLs.</p>
+<p>For existing files, the Unreleased comparison link supplies the tag prefix and ref. A supported Git remote supplies the repository URL. Outside Git, a complete existing link already supplies all settings. The extension asks for a repository URL only when it needs one outside Git; it never asks for tag prefix or Unreleased ref while opening an existing document.</p>
+<p>Git repositories without a remote do not trigger a URL prompt. Existing links remain usable; otherwise generation stays off. If Git is disabled or unavailable, repository discovery is unavailable.</p>
+<h2 id="missing-or-unsupported-links">Missing or unsupported links</h2>
+<p>No branch or tag prefix is guessed for an existing document. Add a supported reference in Markdown, for example:</p>
+<pre><code class="language-markdown">[Unreleased]: https://github.com/owner/project/compare/v0.1.0...main
+</code></pre>
+<p>Or for GitLab:</p>
+<pre><code class="language-markdown">[Unreleased]: https://gitlab.example.org/team/project/-/compare/v0.1.0...develop
+</code></pre>
+<p>The form detects it on the next document update. Unsupported hosts keep their URLs without automatic generation. Conflicting links and malformed versions are preserved for correction. For new self-hosted repositories, a host picker distinguishes GitHub from GitLab.</p>
+<h2 id="recover-a-concurrent-edit">Recover a concurrent edit</h2>
+<p>If the source changes while a form edit is in flight, run <strong>Changelog Studio: Recover Conflicting Draft</strong>. It opens the latest conflicting form draft in an unsaved Markdown document. Compare and copy the intended changes into the original; the extension does not overwrite newer source automatically.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../tutorials/first-release/" class="btn btn-neutral float-left" title="Your first release"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../develop/" class="btn btn-neutral float-right" title="Develop and test">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/terradue/changelog-studio" class="fa fa-code-fork" style="color: #fcfcfc"> terradue/changelog-studio</a>
+        </span>
+    
+    
+      <span><a href="../../tutorials/first-release/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../develop/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
