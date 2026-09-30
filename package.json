@@ -72,7 +72,7 @@
     "package": "node scripts/package.cjs"
   },
   "devDependencies": {
-    "@playwright/test": "1.55.1",
+    "@playwright/test": "1.63.0",
     "@vscode/vsce": "^3.6.0",
     "jsdom": "26.1.0"
   }
